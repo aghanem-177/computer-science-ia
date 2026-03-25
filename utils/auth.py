@@ -2,12 +2,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from flask import session, redirect, url_for, flash
 
-SCHOOL_DOMAIN = "bisc.edu"
+SCHOOL_DOMAIN = "bisc.edu.eg"
 
 STAFF_EMAILS = [
-    "admin@bisc.edu",
-    "reception@bisc.edu",
-    "lostfound@bisc.edu",
+    "admin@bisc.edu.eg",
+    "reception@bisc.edu.eg",
+    "lostfound@bisc.edu.eg",
 ]
 
 
