@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}{{ g.t.dashboard }}{% endblock %}
+{% block content %}
+<h1 style="margin-bottom: 24px;">{{ g.t.welcome }}, {{ session.get('user_name') }}!</h1>
+
+<div class="stats-grid">
+    <a href="{{ url_for('search') }}" class="stat-card" style="text-decoration:none; color:inherit;">
+        <div class="stat-num" style="font-size:1.5rem;">&#128269;</div>
+        <div class="stat-label">{{ g.t.search_items }}</div>
+    </a>
+    <a href="{{ url_for('report_lost') }}" class="stat-card" style="text-decoration:none; color:inherit;">
+        <div class="stat-num" style="font-size:1.5rem;">&#128221;</div>
+        <div class="stat-label">{{ g.t.report_lost }}</div>
+    </a>
+    <a href="{{ url_for('my_claims') }}" class="stat-card" style="text-decoration:none; color:inherit;">
+        <div class="stat-num" style="font-size:1.5rem;">&#128230;</div>
+        <div class="stat-label">{{ g.t.my_claims }}</div>
+    </a>
+    <a href="{{ url_for('my_lost_reports') }}" class="stat-card" style="text-decoration:none; color:inherit;">
+        <div class="stat-num" style="font-size:1.5rem;">&#128203;</div>
+        <div class="stat-label">{{ g.t.my_lost_reports }}</div>
+    </a>
+</div>
+
+{% if claims %}
+<div class="card">
+    <div class="card-header">
+        <h2>{{ g.t.my_claims }}</h2>
+        <a href="{{ url_for('my_claims') }}" class="btn btn-sm btn-outline">{{ g.t.view }}</a>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <tr><th>{{ g.t.title }}</th><th>{{ g.t.match_score }}</th><th>{{ g.t.status }}</th></tr>
+            {% for c in claims %}
+            <tr>
+                <td>{{ c.item_title }}</td>
+                <td><span class="badge badge-score">{{ c.match_score }}%</span></td>
+                <td><span class="badge badge-{{ c.status }}">{{ g.t[c.status] }}</span></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endif %}
+
+{% if reports %}
+<div class="card">
+    <div class="card-header">
+        <h2>{{ g.t.my_lost_reports }}</h2>
+        <a href="{{ url_for('my_lost_reports') }}" class="btn btn-sm btn-outline">{{ g.t.view }}</a>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <tr><th>{{ g.t.title }}</th><th>{{ g.t.category }}</th><th>{{ g.t.status }}</th></tr>
+            {% for r in reports %}
+            <tr>
+                <td>{{ r.title }}</td>
+                <td>{{ g.t.get(r.category, r.category) }}</td>
+                <td><span class="badge badge-{{ r.status }}">{{ g.t[r.status] }}</span></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

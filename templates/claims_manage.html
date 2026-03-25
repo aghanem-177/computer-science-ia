@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}{{ g.t.manage_claims }}{% endblock %}
+{% block content %}
+<h1 style="margin-bottom:20px;">{{ g.t.manage_claims }}</h1>
+
+<div class="card" style="margin-bottom:20px;">
+    <div class="filter-bar">
+        <a href="{{ url_for('manage_claims') }}" class="btn btn-sm {% if not sel_status %}btn-primary{% else %}btn-outline{% endif %}">{{ g.t.filter_all }}</a>
+        <a href="{{ url_for('manage_claims', status='pending') }}" class="btn btn-sm {% if sel_status == 'pending' %}btn-warning{% else %}btn-outline{% endif %}">{{ g.t.pending }}</a>
+        <a href="{{ url_for('manage_claims', status='approved') }}" class="btn btn-sm {% if sel_status == 'approved' %}btn-success{% else %}btn-outline{% endif %}">{{ g.t.approved }}</a>
+        <a href="{{ url_for('manage_claims', status='rejected') }}" class="btn btn-sm {% if sel_status == 'rejected' %}btn-danger{% else %}btn-outline{% endif %}">{{ g.t.rejected }}</a>
+    </div>
+</div>
+
+{% if claims %}
+{% for c in claims %}
+<div class="card">
+    <div style="display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap;">
+        {% if c.image_path %}
+        <img src="{{ url_for('static', filename=c.image_path) }}" style="width:80px; height:80px; object-fit:cover; border-radius:8px;">
+        {% endif %}
+        <div style="flex:1; min-width:200px;">
+            <h3>{{ c.item_title }}</h3>
+            <p style="font-size:0.9rem; color:var(--text-light);">
+                {{ g.t.student }}: <strong>{{ c.student_name }}</strong> ({{ c.student_email }})
+            </p>
+            <p style="font-size:0.9rem; margin-top:8px;">{{ c.claim_description }}</p>
+            <div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+                <span class="badge badge-score">{{ g.t.match_score }}: {{ c.match_score }}%</span>
+                <span class="badge badge-{{ c.status }}">{{ g.t[c.status] }}</span>
+            </div>
+        </div>
+
+        {% if c.status == 'pending' %}
+        <div style="display:flex; flex-direction:column; gap:8px; min-width:200px;">
+            <form method="POST" action="{{ url_for('review_claim', claim_id=c.id, action='approve') }}">
+                <input type="text" name="staff_note" placeholder="{{ g.t.staff_note }}" style="width:100%; padding:6px 10px; border:1px solid var(--border); border-radius:6px; margin-bottom:6px;">
+                <button type="submit" class="btn btn-success btn-sm btn-block">{{ g.t.approve }}</button>
+            </form>
+            <form method="POST" action="{{ url_for('review_claim', claim_id=c.id, action='reject') }}">
+                <input type="hidden" name="staff_note" value="">
+                <button type="submit" class="btn btn-danger btn-sm btn-block">{{ g.t.reject }}</button>
+            </form>
+        </div>
+        {% elif c.staff_note %}
+        <div style="min-width:150px;">
+            <p style="font-size:0.85rem; color:var(--text-light);">{{ g.t.staff_note }}:</p>
+            <p style="font-size:0.9rem;">{{ c.staff_note }}</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<div class="card" style="text-align:center; padding:40px;">
+    <p style="color:var(--text-light);">{{ g.t.no_claims }}</p>
+</div>
+{% endif %}
+{% endblock %}

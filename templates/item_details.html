@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}{{ g.t.item_details }}{% endblock %}
+{% block content %}
+<a href="{{ url_for('search') }}" style="display:inline-block; margin-bottom:16px;">&larr; {{ g.t.back }}</a>
+
+<div class="card">
+    <div class="detail-grid">
+        <div class="detail-image">
+            {% if item.image_path %}
+                <img src="{{ url_for('static', filename=item.image_path) }}" alt="{{ item.title }}">
+            {% else %}
+                <div class="no-image">?</div>
+            {% endif %}
+        </div>
+        <div class="detail-info">
+            <h1 style="margin-bottom:8px;">{{ item.title }}</h1>
+            <span class="badge badge-{{ item.status }}" style="font-size:0.9rem;">{{ g.t[item.status] }}</span>
+
+            <dl>
+                <dt>{{ g.t.description }}</dt>
+                <dd>{{ item.description }}</dd>
+
+                <dt>{{ g.t.category }}</dt>
+                <dd>{{ g.t.get(item.category, item.category) }}</dd>
+
+                <dt>{{ g.t.location }}</dt>
+                <dd>{{ g.t.get(item.location_found, item.location_found) }}</dd>
+
+                <dt>{{ g.t.date_found }}</dt>
+                <dd>{{ item.date_found }}</dd>
+
+                {% if staff %}
+                <dt>{{ g.t.found_by_staff }}</dt>
+                <dd>{{ staff.name }}</dd>
+                {% endif %}
+            </dl>
+
+            {% if item.ai_description %}
+            <div class="ai-box">
+                <strong>{{ g.t.ai_description }}:</strong> {{ item.ai_description }}
+            </div>
+            {% endif %}
+
+            {% if item.status == 'available' and session.get('role') == 'student' %}
+            <a href="{{ url_for('claim_item', item_id=item.id) }}" class="btn btn-primary" style="margin-top:20px;">
+                {{ g.t.claim_this }}
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

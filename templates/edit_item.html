@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}{{ g.t.edit }} — {{ item.title }}{% endblock %}
+{% block content %}
+<div style="max-width:700px; margin:0 auto;">
+    <a href="{{ url_for('staff_dashboard') }}" style="display:inline-block; margin-bottom:16px;">&larr; {{ g.t.back }}</a>
+    <h1 style="margin-bottom:20px;">{{ g.t.edit }}: {{ item.title }}</h1>
+    <div class="card">
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>{{ g.t.title }}</label>
+                <input type="text" name="title" required value="{{ item.title }}">
+            </div>
+            <div class="form-group">
+                <label>{{ g.t.description }}</label>
+                <textarea name="description" rows="4" required>{{ item.description }}</textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>{{ g.t.category }}</label>
+                    <select name="category" required>
+                        {% for cat in g.categories %}
+                        <option value="{{ cat }}" {% if item.category == cat %}selected{% endif %}>{{ g.t.get(cat, cat) }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>{{ g.t.location }}</label>
+                    <select name="location_found" required>
+                        {% for loc in g.locations %}
+                        <option value="{{ loc }}" {% if item.location_found == loc %}selected{% endif %}>{{ g.t.get(loc, loc) }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>{{ g.t.date_found }}</label>
+                    <input type="date" name="date_found" required value="{{ item.date_found }}" max="{{ today }}">
+                </div>
+                <div class="form-group">
+                    <label>{{ g.t.status }}</label>
+                    <select name="status" required>
+                        <option value="available" {% if item.status == 'available' %}selected{% endif %}>{{ g.t.available }}</option>
+                        <option value="claimed" {% if item.status == 'claimed' %}selected{% endif %}>{{ g.t.claimed }}</option>
+                        <option value="returned" {% if item.status == 'returned' %}selected{% endif %}>{{ g.t.returned }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>{{ g.t.image }} (leave blank to keep current)</label>
+                <input type="file" name="image" accept="image/*">
+                {% if item.image_path %}
+                <p style="font-size:0.85rem; color:var(--text-light); margin-top:4px;">Current: {{ item.image_path }}</p>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary">{{ g.t.save }}</button>
+            <a href="{{ url_for('staff_dashboard') }}" class="btn btn-outline" style="margin-left:8px;">{{ g.t.cancel }}</a>
+        </form>
+    </div>
+
+    <form method="POST" action="{{ url_for('delete_item', item_id=item.id) }}" style="margin-top:16px;">
+        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">{{ g.t.delete }}</button>
+    </form>
+</div>
+{% endblock %}

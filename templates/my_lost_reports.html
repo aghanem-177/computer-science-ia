@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}{{ g.t.my_lost_reports }}{% endblock %}
+{% block content %}
+<h1 style="margin-bottom:20px;">{{ g.t.my_lost_reports }}</h1>
+
+{% if reports %}
+<div class="card">
+    <div class="table-wrap">
+        <table>
+            <tr>
+                <th>{{ g.t.title }}</th>
+                <th>{{ g.t.category }}</th>
+                <th>{{ g.t.location }}</th>
+                <th>{{ g.t.date_lost }}</th>
+                <th>{{ g.t.status }}</th>
+            </tr>
+            {% for r in reports %}
+            <tr>
+                <td>{{ r.title }}</td>
+                <td>{{ g.t.get(r.category, r.category) }}</td>
+                <td>{{ g.t.get(r.location_lost, r.location_lost) }}</td>
+                <td>{{ r.date_lost }}</td>
+                <td><span class="badge badge-{{ r.status }}">{{ g.t[r.status] }}</span></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="card" style="text-align:center; padding:40px;">
+    <p style="color:var(--text-light);">{{ g.t.no_reports }}</p>
+    <a href="{{ url_for('report_lost') }}" class="btn btn-primary" style="margin-top:12px;">{{ g.t.report_lost }}</a>
+</div>
+{% endif %}
+{% endblock %}

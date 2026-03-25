@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="{{ g.lang }}" dir="{{ g.dir }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ g.t.site_name }} — {% block title %}{{ g.t.home }}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="{{ g.dir }}">
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-brand">{{ g.t.site_name }}</a>
+            <div class="nav-links">
+                {% if session.get('user_id') %}
+                    {% if session.get('role') == 'staff' %}
+                        <a href="{{ url_for('staff_dashboard') }}">{{ g.t.dashboard }}</a>
+                        <a href="{{ url_for('add_item') }}">{{ g.t.add_item }}</a>
+                        <a href="{{ url_for('manage_claims') }}">{{ g.t.manage_claims }}</a>
+                        <a href="{{ url_for('reports') }}">{{ g.t.reports }}</a>
+                    {% else %}
+                        <a href="{{ url_for('student_dashboard') }}">{{ g.t.dashboard }}</a>
+                        <a href="{{ url_for('search') }}">{{ g.t.search }}</a>
+                        <a href="{{ url_for('report_lost') }}">{{ g.t.report_lost }}</a>
+                        <a href="{{ url_for('my_claims') }}">{{ g.t.my_claims }}</a>
+                    {% endif %}
+                    <div class="nav-right">
+                        <span class="nav-user">{{ session.get('user_name') }}</span>
+                        <div class="lang-switch">
+                            <a href="{{ url_for('set_language', lang='en') }}" class="{% if g.lang == 'en' %}active{% endif %}">EN</a>
+                            <a href="{{ url_for('set_language', lang='ar') }}" class="{% if g.lang == 'ar' %}active{% endif %}">ع</a>
+                        </div>
+                        <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline">{{ g.t.logout }}</a>
+                    </div>
+                {% else %}
+                    <div class="nav-right">
+                        <div class="lang-switch">
+                            <a href="{{ url_for('set_language', lang='en') }}" class="{% if g.lang == 'en' %}active{% endif %}">EN</a>
+                            <a href="{{ url_for('set_language', lang='ar') }}" class="{% if g.lang == 'ar' %}active{% endif %}">ع</a>
+                        </div>
+                        <a href="{{ url_for('login') }}" class="btn btn-sm btn-primary">{{ g.t.login }}</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 {{ g.t.site_name }} — BISC Lost &amp; Found System</p>
+    </footer>
+</body>
+</html>

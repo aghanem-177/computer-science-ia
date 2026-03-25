@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}{{ g.t.dashboard }} — {{ g.t.staff }}{% endblock %}
+{% block content %}
+<h1 style="margin-bottom:24px;">{{ g.t.dashboard }}</h1>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-num">{{ total_items }}</div>
+        <div class="stat-label">{{ g.t.total_items }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-num" style="color:var(--warning);">{{ pending_claims }}</div>
+        <div class="stat-label">{{ g.t.pending }} {{ g.t.manage_claims }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-num" style="color:var(--success);">{{ returned }}</div>
+        <div class="stat-label">{{ g.t.total_returned }}</div>
+    </div>
+</div>
+
+<div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
+    <a href="{{ url_for('add_item') }}" class="stat-card" style="text-decoration:none; color:inherit;">
+        <div style="font-size:1.5rem;">+</div>
+        <div class="stat-label">{{ g.t.add_item }}</div>
+    </a>
+    <a href="{{ url_for('all_items') }}" class="stat-card" style="text-decoration:none; color:inherit;">
+        <div style="font-size:1.5rem;">&#128451;</div>
+        <div class="stat-label">{{ g.t.all_items }}</div>
+    </a>
+    <a href="{{ url_for('manage_claims') }}" class="stat-card" style="text-decoration:none; color:inherit;">
+        <div style="font-size:1.5rem;">&#128203;</div>
+        <div class="stat-label">{{ g.t.manage_claims }}</div>
+    </a>
+    <a href="{{ url_for('reports') }}" class="stat-card" style="text-decoration:none; color:inherit;">
+        <div style="font-size:1.5rem;">&#128200;</div>
+        <div class="stat-label">{{ g.t.reports }}</div>
+    </a>
+</div>
+
+{% if recent %}
+<div class="card">
+    <div class="card-header">
+        <h2>{{ g.t.recent_items }}</h2>
+        <a href="{{ url_for('all_items') }}" class="btn btn-sm btn-outline">{{ g.t.view }}</a>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <tr>
+                <th>{{ g.t.title }}</th>
+                <th>{{ g.t.category }}</th>
+                <th>{{ g.t.location }}</th>
+                <th>{{ g.t.date_found }}</th>
+                <th>{{ g.t.status }}</th>
+                <th>{{ g.t.actions }}</th>
+            </tr>
+            {% for item in recent %}
+            <tr>
+                <td>{{ item.title }}</td>
+                <td>{{ g.t.get(item.category, item.category) }}</td>
+                <td>{{ g.t.get(item.location_found, item.location_found) }}</td>
+                <td>{{ item.date_found }}</td>
+                <td><span class="badge badge-{{ item.status }}">{{ g.t[item.status] }}</span></td>
+                <td>
+                    <a href="{{ url_for('edit_item', item_id=item.id) }}" class="btn btn-sm btn-outline">{{ g.t.edit }}</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

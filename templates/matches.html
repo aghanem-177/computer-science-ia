@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}{{ g.t.potential_matches }}{% endblock %}
+{% block content %}
+<h1 style="margin-bottom:8px;">{{ g.t.potential_matches }}</h1>
+<p style="color:var(--text-light); margin-bottom:20px;">{{ g.t.match_notification }}</p>
+
+{% for item, score in matches %}
+<div class="card match-card">
+    <div class="match-score">
+        <span class="badge badge-score" style="font-size:1.1rem;">{{ score }}%</span>
+    </div>
+    <div style="flex:1;">
+        <h3>{{ item.title }}</h3>
+        <p style="font-size:0.9rem; color:var(--text-light);">{{ item.description[:120] }}{% if item.description|length > 120 %}...{% endif %}</p>
+        <p style="font-size:0.85rem;">{{ g.t.get(item.category, item.category) }} &bull; {{ g.t.get(item.location_found, item.location_found) }} &bull; {{ item.date_found }}</p>
+    </div>
+    <a href="{{ url_for('claim_item', item_id=item.id) }}" class="btn btn-primary btn-sm">{{ g.t.claim_this }}</a>
+</div>
+{% endfor %}
+
+<a href="{{ url_for('my_lost_reports') }}" class="btn btn-outline" style="margin-top:12px;">{{ g.t.my_lost_reports }}</a>
+{% endblock %}
