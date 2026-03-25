@@ -2,21 +2,23 @@
 {% block title %}{{ g.t.add_item }}{% endblock %}
 {% block content %}
 <div style="max-width:700px; margin:0 auto;">
-    <h1 style="margin-bottom:20px;">{{ g.t.add_item }}</h1>
+    <div class="page-header">
+        <h1><i class="fas fa-plus-circle" style="margin-right:8px;"></i> {{ g.t.add_item }}</h1>
+    </div>
     <div class="card">
         <form method="POST" enctype="multipart/form-data">
             <div class="form-group">
-                <label>{{ g.t.title }}</label>
+                <label><i class="fas fa-heading"></i> {{ g.t.title }}</label>
                 <input type="text" name="title" required placeholder="e.g. Black Samsung Phone">
             </div>
             <div class="form-group">
-                <label>{{ g.t.description }}</label>
+                <label><i class="fas fa-align-left"></i> {{ g.t.description }}</label>
                 <textarea name="description" rows="4" required
                     placeholder="Describe the item in detail: color, brand, size, condition, any identifying marks..."></textarea>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>{{ g.t.category }}</label>
+                    <label><i class="fas fa-tag"></i> {{ g.t.category }}</label>
                     <select name="category" required>
                         {% for cat in g.categories %}
                         <option value="{{ cat }}">{{ g.t.get(cat, cat) }}</option>
@@ -24,7 +26,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>{{ g.t.location }}</label>
+                    <label><i class="fas fa-map-pin"></i> {{ g.t.location }}</label>
                     <select name="location_found" required>
                         {% for loc in g.locations %}
                         <option value="{{ loc }}">{{ g.t.get(loc, loc) }}</option>
@@ -34,15 +36,15 @@
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>{{ g.t.date_found }}</label>
+                    <label><i class="fas fa-calendar"></i> {{ g.t.date_found }}</label>
                     <input type="date" name="date_found" required max="{{ today }}">
                 </div>
                 <div class="form-group">
-                    <label>{{ g.t.image }}</label>
+                    <label><i class="fas fa-camera"></i> {{ g.t.image }}</label>
                     <input type="file" name="image" accept="image/*">
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">{{ g.t.submit }}</button>
+            <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-plus"></i> {{ g.t.submit }}</button>
         </form>
     </div>
 </div>

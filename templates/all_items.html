@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}{{ g.t.all_items }}{% endblock %}
 {% block content %}
-<div class="card-header" style="margin-bottom:20px;">
-    <h1>{{ g.t.all_items }}</h1>
-    <a href="{{ url_for('add_item') }}" class="btn btn-primary">+ {{ g.t.add_item }}</a>
+<div class="page-header">
+    <h1><i class="fas fa-th-list" style="margin-right:8px;"></i> {{ g.t.all_items }}</h1>
+    <a href="{{ url_for('add_item') }}" class="btn btn-primary"><i class="fas fa-plus"></i> {{ g.t.add_item }}</a>
 </div>
 
 {% if items %}
@@ -23,18 +23,18 @@
             <tr>
                 <td>
                     {% if item.image_path %}
-                    <img src="{{ url_for('static', filename=item.image_path) }}" style="width:50px; height:50px; object-fit:cover; border-radius:6px;">
+                    <img src="{{ url_for('static', filename=item.image_path) }}" style="width:50px; height:50px; object-fit:cover; border-radius:10px; border:1px solid var(--border);">
                     {% else %}
-                    <div style="width:50px; height:50px; background:var(--bg); border-radius:6px; display:flex; align-items:center; justify-content:center; color:var(--text-light);">?</div>
+                    <div style="width:50px; height:50px; background:rgba(99,102,241,0.1); border-radius:10px; display:flex; align-items:center; justify-content:center; color:var(--primary-light);"><i class="fas fa-box-open"></i></div>
                     {% endif %}
                 </td>
-                <td>{{ item.title }}</td>
+                <td style="color:#fff; font-weight:500;">{{ item.title }}</td>
                 <td>{{ g.t.get(item.category, item.category) }}</td>
                 <td>{{ g.t.get(item.location_found, item.location_found) }}</td>
                 <td>{{ item.date_found }}</td>
                 <td><span class="badge badge-{{ item.status }}">{{ g.t[item.status] }}</span></td>
                 <td>
-                    <a href="{{ url_for('edit_item', item_id=item.id) }}" class="btn btn-sm btn-outline">{{ g.t.edit }}</a>
+                    <a href="{{ url_for('edit_item', item_id=item.id) }}" class="btn btn-sm btn-outline"><i class="fas fa-pen"></i> {{ g.t.edit }}</a>
                 </td>
             </tr>
             {% endfor %}
@@ -42,8 +42,9 @@
     </div>
 </div>
 {% else %}
-<div class="card" style="text-align:center; padding:40px;">
-    <p style="color:var(--text-light);">{{ g.t.no_items }}</p>
+<div class="card" style="text-align:center; padding:60px;">
+    <i class="fas fa-box-open" style="font-size:3rem; color:var(--text-muted); margin-bottom:16px; display:block;"></i>
+    <p style="color:var(--text-muted); font-size:1.05rem;">{{ g.t.no_items }}</p>
 </div>
 {% endif %}
 {% endblock %}

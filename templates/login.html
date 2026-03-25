@@ -6,20 +6,21 @@
         <h1>{{ g.t.login }}</h1>
         <form method="POST">
             <div class="form-group">
-                <label>{{ g.t.email }}</label>
+                <label><i class="fas fa-envelope"></i> {{ g.t.email }}</label>
                 <input type="email" name="email" required placeholder="name@bisc.edu">
             </div>
             <div class="form-group">
-                <label>{{ g.t.password }}</label>
+                <label><i class="fas fa-lock"></i> {{ g.t.password }}</label>
                 <input type="password" name="password" required>
             </div>
-            <button type="submit" class="btn btn-primary btn-block">{{ g.t.login_btn }}</button>
+            <button type="submit" class="btn btn-primary btn-block btn-lg">{{ g.t.login_btn }}</button>
         </form>
-        <p style="text-align:center; margin-top:16px; font-size:0.9rem;">
-            {{ g.t.no_account }} <a href="{{ url_for('register') }}">{{ g.t.register }}</a>
+        <div class="auth-divider">or</div>
+        <p style="text-align:center; font-size:0.9rem;">
+            {{ g.t.no_account }} <a href="{{ url_for('register') }}" style="font-weight:600;">{{ g.t.register }}</a>
         </p>
-        <p style="text-align:center; font-size:0.8rem; color:var(--text-light); margin-top:8px;">
-            {{ g.t.school_email_required }}
+        <p style="text-align:center; font-size:0.8rem; color:var(--text-muted); margin-top:12px;">
+            <i class="fas fa-shield-alt"></i> {{ g.t.school_email_required }}
         </p>
     </div>
 </div>

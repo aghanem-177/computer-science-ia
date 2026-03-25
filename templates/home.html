@@ -5,12 +5,15 @@
     <h1>{{ g.t.hero_title }}</h1>
     <p>{{ g.t.hero_subtitle }}</p>
     <div class="hero-buttons">
-        <a href="{{ url_for('search') }}" class="btn btn-white">{{ g.t.hero_search }}</a>
-        <a href="{{ url_for('report_lost') }}" class="btn btn-outline-white">{{ g.t.hero_report }}</a>
+        <a href="{{ url_for('search') }}" class="btn btn-white btn-lg"><i class="fas fa-search"></i> {{ g.t.hero_search }}</a>
+        <a href="{{ url_for('report_lost') }}" class="btn btn-outline-white btn-lg"><i class="fas fa-bullhorn"></i> {{ g.t.hero_report }}</a>
     </div>
 </div>
 
-<h2 style="margin-bottom: 16px;">{{ g.t.how_it_works }}</h2>
+<div style="text-align:center; margin-bottom: 12px;">
+    <h2 class="section-title">{{ g.t.how_it_works }}</h2>
+    <p class="section-subtitle">Simple steps to recover your lost belongings</p>
+</div>
 <div class="steps">
     <div class="card step">
         <div class="step-num">1</div>
@@ -30,7 +33,10 @@
 </div>
 
 {% if recent_items %}
-<h2 style="margin: 32px 0 16px;">{{ g.t.recent_items }}</h2>
+<div style="text-align:center; margin: 48px 0 20px;">
+    <h2 class="section-title">{{ g.t.recent_items }}</h2>
+    <p class="section-subtitle">Recently logged items waiting to be claimed</p>
+</div>
 <div class="card-grid">
     {% for item in recent_items %}
     <a href="{{ url_for('item_details', item_id=item.id) }}" style="text-decoration:none; color:inherit;">
@@ -38,14 +44,14 @@
             {% if item.image_path %}
                 <img src="{{ url_for('static', filename=item.image_path) }}" alt="{{ item.title }}">
             {% else %}
-                <div class="no-image">?</div>
+                <div class="no-image"><i class="fas fa-box-open"></i></div>
             {% endif %}
             <div class="item-card-body">
                 <h3>{{ item.title }}</h3>
                 <p>{{ item.description[:80] }}{% if item.description|length > 80 %}...{% endif %}</p>
                 <div class="item-meta">
-                    <span class="badge badge-available">{{ g.t[item.status] }}</span>
-                    <span class="badge" style="background:#f1f3f4;">{{ g.t.get(item.category, item.category) }}</span>
+                    <span class="badge badge-{{ item.status }}">{{ g.t[item.status] }}</span>
+                    <span class="badge badge-cat"><i class="fas fa-tag"></i> {{ g.t.get(item.category, item.category) }}</span>
                 </div>
             </div>
         </div>

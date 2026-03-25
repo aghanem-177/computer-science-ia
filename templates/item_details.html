@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}{{ g.t.item_details }}{% endblock %}
 {% block content %}
-<a href="{{ url_for('search') }}" style="display:inline-block; margin-bottom:16px;">&larr; {{ g.t.back }}</a>
+<a href="{{ url_for('search') }}" class="btn btn-sm btn-outline" style="margin-bottom:20px;"><i class="fas fa-arrow-left"></i> {{ g.t.back }}</a>
 
 <div class="card">
     <div class="detail-grid">
@@ -9,41 +9,41 @@
             {% if item.image_path %}
                 <img src="{{ url_for('static', filename=item.image_path) }}" alt="{{ item.title }}">
             {% else %}
-                <div class="no-image">?</div>
+                <div class="no-image"><i class="fas fa-box-open"></i></div>
             {% endif %}
         </div>
         <div class="detail-info">
-            <h1 style="margin-bottom:8px;">{{ item.title }}</h1>
-            <span class="badge badge-{{ item.status }}" style="font-size:0.9rem;">{{ g.t[item.status] }}</span>
+            <h1 style="margin-bottom:12px; font-size:1.6rem; font-weight:800; color:#fff;">{{ item.title }}</h1>
+            <span class="badge badge-{{ item.status }}" style="font-size:0.85rem;">{{ g.t[item.status] }}</span>
 
             <dl>
-                <dt>{{ g.t.description }}</dt>
+                <dt><i class="fas fa-align-left"></i> {{ g.t.description }}</dt>
                 <dd>{{ item.description }}</dd>
 
-                <dt>{{ g.t.category }}</dt>
+                <dt><i class="fas fa-tag"></i> {{ g.t.category }}</dt>
                 <dd>{{ g.t.get(item.category, item.category) }}</dd>
 
-                <dt>{{ g.t.location }}</dt>
+                <dt><i class="fas fa-map-pin"></i> {{ g.t.location }}</dt>
                 <dd>{{ g.t.get(item.location_found, item.location_found) }}</dd>
 
-                <dt>{{ g.t.date_found }}</dt>
+                <dt><i class="fas fa-calendar"></i> {{ g.t.date_found }}</dt>
                 <dd>{{ item.date_found }}</dd>
 
                 {% if staff %}
-                <dt>{{ g.t.found_by_staff }}</dt>
+                <dt><i class="fas fa-user-tie"></i> {{ g.t.found_by_staff }}</dt>
                 <dd>{{ staff.name }}</dd>
                 {% endif %}
             </dl>
 
             {% if item.ai_description %}
             <div class="ai-box">
-                <strong>{{ g.t.ai_description }}:</strong> {{ item.ai_description }}
+                <strong><i class="fas fa-robot"></i> {{ g.t.ai_description }}:</strong> {{ item.ai_description }}
             </div>
             {% endif %}
 
             {% if item.status == 'available' and session.get('role') == 'student' %}
-            <a href="{{ url_for('claim_item', item_id=item.id) }}" class="btn btn-primary" style="margin-top:20px;">
-                {{ g.t.claim_this }}
+            <a href="{{ url_for('claim_item', item_id=item.id) }}" class="btn btn-primary btn-lg" style="margin-top:24px;">
+                <i class="fas fa-hand-paper"></i> {{ g.t.claim_this }}
             </a>
             {% endif %}
         </div>

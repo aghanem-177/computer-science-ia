@@ -1,16 +1,18 @@
 {% extends 'base.html' %}
 {% block title %}{{ g.t.search_items }}{% endblock %}
 {% block content %}
-<h1 style="margin-bottom: 20px;">{{ g.t.search_items }}</h1>
+<div class="page-header">
+    <h1><i class="fas fa-search" style="margin-right:8px;"></i> {{ g.t.search_items }}</h1>
+</div>
 
 <form method="GET" class="card">
     <div class="filter-bar">
         <div class="form-group" style="flex:2;">
-            <label>{{ g.t.search }}</label>
-            <input type="text" name="keyword" value="{{ keyword }}" placeholder="...">
+            <label><i class="fas fa-keyboard"></i> {{ g.t.search }}</label>
+            <input type="text" name="keyword" value="{{ keyword }}" placeholder="Search by name or description...">
         </div>
         <div class="form-group">
-            <label>{{ g.t.category }}</label>
+            <label><i class="fas fa-tag"></i> {{ g.t.category }}</label>
             <select name="category">
                 <option value="">{{ g.t.filter_all }}</option>
                 {% for cat in g.categories %}
@@ -19,7 +21,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label>{{ g.t.location }}</label>
+            <label><i class="fas fa-map-pin"></i> {{ g.t.location }}</label>
             <select name="location">
                 <option value="">{{ g.t.filter_all }}</option>
                 {% for loc in g.locations %}
@@ -28,7 +30,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label>{{ g.t.status }}</label>
+            <label><i class="fas fa-info-circle"></i> {{ g.t.status }}</label>
             <select name="status">
                 <option value="">{{ g.t.filter_all }}</option>
                 <option value="available" {% if sel_status == 'available' %}selected{% endif %}>{{ g.t.available }}</option>
@@ -38,28 +40,28 @@
         </div>
         <div class="form-group">
             <label>&nbsp;</label>
-            <button type="submit" class="btn btn-primary">{{ g.t.search }}</button>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> {{ g.t.search }}</button>
         </div>
     </div>
 </form>
 
 {% if items %}
-<div class="card-grid" style="margin-top: 20px;">
+<div class="card-grid" style="margin-top: 24px;">
     {% for item in items %}
     <a href="{{ url_for('item_details', item_id=item.id) }}" style="text-decoration:none; color:inherit;">
         <div class="item-card">
             {% if item.image_path %}
                 <img src="{{ url_for('static', filename=item.image_path) }}" alt="{{ item.title }}">
             {% else %}
-                <div class="no-image">?</div>
+                <div class="no-image"><i class="fas fa-box-open"></i></div>
             {% endif %}
             <div class="item-card-body">
                 <h3>{{ item.title }}</h3>
                 <p>{{ item.description[:80] }}{% if item.description|length > 80 %}...{% endif %}</p>
                 <div class="item-meta">
                     <span class="badge badge-{{ item.status }}">{{ g.t[item.status] }}</span>
-                    <span class="badge" style="background:#f1f3f4;">{{ g.t.get(item.category, item.category) }}</span>
-                    <span class="badge" style="background:#f1f3f4;">{{ g.t.get(item.location_found, item.location_found) }}</span>
+                    <span class="badge badge-cat"><i class="fas fa-tag"></i> {{ g.t.get(item.category, item.category) }}</span>
+                    <span class="badge badge-cat"><i class="fas fa-map-pin"></i> {{ g.t.get(item.location_found, item.location_found) }}</span>
                 </div>
             </div>
         </div>
@@ -67,8 +69,9 @@
     {% endfor %}
 </div>
 {% else %}
-<div class="card" style="text-align:center; padding:40px; margin-top:20px;">
-    <p style="color:var(--text-light);">{{ g.t.no_items }}</p>
+<div class="card" style="text-align:center; padding:60px; margin-top:24px;">
+    <i class="fas fa-inbox" style="font-size:3rem; color:var(--text-muted); margin-bottom:16px; display:block;"></i>
+    <p style="color:var(--text-muted); font-size:1.05rem;">{{ g.t.no_items }}</p>
 </div>
 {% endif %}
 {% endblock %}

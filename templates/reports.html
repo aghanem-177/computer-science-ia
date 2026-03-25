@@ -1,30 +1,36 @@
 {% extends 'base.html' %}
 {% block title %}{{ g.t.reports }}{% endblock %}
 {% block content %}
-<h1 style="margin-bottom:24px;">{{ g.t.reports }}</h1>
+<div class="page-header">
+    <h1><i class="fas fa-chart-bar" style="margin-right:8px;"></i> {{ g.t.reports }}</h1>
+</div>
 
 <div class="stats-grid">
     <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-box-open"></i></div>
         <div class="stat-num">{{ total }}</div>
         <div class="stat-label">{{ g.t.total_items }}</div>
     </div>
     <div class="stat-card">
-        <div class="stat-num" style="color:var(--success);">{{ returned }}</div>
+        <div class="stat-icon"><i class="fas fa-undo"></i></div>
+        <div class="stat-num">{{ returned }}</div>
         <div class="stat-label">{{ g.t.total_returned }}</div>
     </div>
     <div class="stat-card">
-        <div class="stat-num" style="color:var(--warning);">{{ claimed }}</div>
+        <div class="stat-icon"><i class="fas fa-hand-paper"></i></div>
+        <div class="stat-num">{{ claimed }}</div>
         <div class="stat-label">{{ g.t.claimed }}</div>
     </div>
     <div class="stat-card">
-        <div class="stat-num" style="color:var(--primary);">{{ rate }}%</div>
+        <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+        <div class="stat-num">{{ rate }}%</div>
         <div class="stat-label">{{ g.t.return_rate }}</div>
     </div>
 </div>
 
-<div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
     <div class="card">
-        <h2 style="margin-bottom:16px;">{{ g.t.items_by_category }}</h2>
+        <h2 style="margin-bottom:20px; font-weight:700; color:#fff;"><i class="fas fa-tag" style="color:var(--primary-light); margin-right:8px;"></i> {{ g.t.items_by_category }}</h2>
         {% if by_category %}
         <div class="bar-chart">
             {% set max_cat = by_category[0]['count'] if by_category else 1 %}
@@ -36,12 +42,12 @@
             {% endfor %}
         </div>
         {% else %}
-        <p style="color:var(--text-light);">{{ g.t.no_items }}</p>
+        <p style="color:var(--text-muted);">{{ g.t.no_items }}</p>
         {% endif %}
     </div>
 
     <div class="card">
-        <h2 style="margin-bottom:16px;">{{ g.t.items_by_location }}</h2>
+        <h2 style="margin-bottom:20px; font-weight:700; color:#fff;"><i class="fas fa-map-pin" style="color:var(--accent); margin-right:8px;"></i> {{ g.t.items_by_location }}</h2>
         {% if by_location %}
         <div class="bar-chart">
             {% set max_loc = by_location[0]['count'] if by_location else 1 %}
@@ -53,7 +59,7 @@
             {% endfor %}
         </div>
         {% else %}
-        <p style="color:var(--text-light);">{{ g.t.no_items }}</p>
+        <p style="color:var(--text-muted);">{{ g.t.no_items }}</p>
         {% endif %}
     </div>
 </div>

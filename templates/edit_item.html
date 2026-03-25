@@ -2,21 +2,23 @@
 {% block title %}{{ g.t.edit }} — {{ item.title }}{% endblock %}
 {% block content %}
 <div style="max-width:700px; margin:0 auto;">
-    <a href="{{ url_for('staff_dashboard') }}" style="display:inline-block; margin-bottom:16px;">&larr; {{ g.t.back }}</a>
-    <h1 style="margin-bottom:20px;">{{ g.t.edit }}: {{ item.title }}</h1>
+    <a href="{{ url_for('staff_dashboard') }}" class="btn btn-sm btn-outline" style="margin-bottom:20px;"><i class="fas fa-arrow-left"></i> {{ g.t.back }}</a>
+    <div class="page-header">
+        <h1><i class="fas fa-pen" style="margin-right:8px;"></i> {{ g.t.edit }}: {{ item.title }}</h1>
+    </div>
     <div class="card">
         <form method="POST" enctype="multipart/form-data">
             <div class="form-group">
-                <label>{{ g.t.title }}</label>
+                <label><i class="fas fa-heading"></i> {{ g.t.title }}</label>
                 <input type="text" name="title" required value="{{ item.title }}">
             </div>
             <div class="form-group">
-                <label>{{ g.t.description }}</label>
+                <label><i class="fas fa-align-left"></i> {{ g.t.description }}</label>
                 <textarea name="description" rows="4" required>{{ item.description }}</textarea>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>{{ g.t.category }}</label>
+                    <label><i class="fas fa-tag"></i> {{ g.t.category }}</label>
                     <select name="category" required>
                         {% for cat in g.categories %}
                         <option value="{{ cat }}" {% if item.category == cat %}selected{% endif %}>{{ g.t.get(cat, cat) }}</option>
@@ -24,7 +26,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>{{ g.t.location }}</label>
+                    <label><i class="fas fa-map-pin"></i> {{ g.t.location }}</label>
                     <select name="location_found" required>
                         {% for loc in g.locations %}
                         <option value="{{ loc }}" {% if item.location_found == loc %}selected{% endif %}>{{ g.t.get(loc, loc) }}</option>
@@ -34,11 +36,11 @@
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>{{ g.t.date_found }}</label>
+                    <label><i class="fas fa-calendar"></i> {{ g.t.date_found }}</label>
                     <input type="date" name="date_found" required value="{{ item.date_found }}" max="{{ today }}">
                 </div>
                 <div class="form-group">
-                    <label>{{ g.t.status }}</label>
+                    <label><i class="fas fa-info-circle"></i> {{ g.t.status }}</label>
                     <select name="status" required>
                         <option value="available" {% if item.status == 'available' %}selected{% endif %}>{{ g.t.available }}</option>
                         <option value="claimed" {% if item.status == 'claimed' %}selected{% endif %}>{{ g.t.claimed }}</option>
@@ -47,19 +49,23 @@
                 </div>
             </div>
             <div class="form-group">
-                <label>{{ g.t.image }} (leave blank to keep current)</label>
+                <label><i class="fas fa-camera"></i> {{ g.t.image }} (leave blank to keep current)</label>
                 <input type="file" name="image" accept="image/*">
                 {% if item.image_path %}
-                <p style="font-size:0.85rem; color:var(--text-light); margin-top:4px;">Current: {{ item.image_path }}</p>
+                <p style="font-size:0.8rem; color:var(--text-muted); margin-top:6px;"><i class="fas fa-image"></i> Current: {{ item.image_path }}</p>
                 {% endif %}
             </div>
-            <button type="submit" class="btn btn-primary">{{ g.t.save }}</button>
-            <a href="{{ url_for('staff_dashboard') }}" class="btn btn-outline" style="margin-left:8px;">{{ g.t.cancel }}</a>
+            <div style="display:flex; gap:12px;">
+                <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save"></i> {{ g.t.save }}</button>
+                <a href="{{ url_for('staff_dashboard') }}" class="btn btn-outline btn-lg">{{ g.t.cancel }}</a>
+            </div>
         </form>
     </div>
 
-    <form method="POST" action="{{ url_for('delete_item', item_id=item.id) }}" style="margin-top:16px;">
-        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">{{ g.t.delete }}</button>
+    <form method="POST" action="{{ url_for('delete_item', item_id=item.id) }}" style="margin-top:20px;">
+        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?')">
+            <i class="fas fa-trash"></i> {{ g.t.delete }}
+        </button>
     </form>
 </div>
 {% endblock %}

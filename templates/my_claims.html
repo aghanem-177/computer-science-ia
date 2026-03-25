@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}{{ g.t.my_claims }}{% endblock %}
 {% block content %}
-<h1 style="margin-bottom:20px;">{{ g.t.my_claims }}</h1>
+<div class="page-header">
+    <h1><i class="fas fa-hand-paper" style="margin-right:8px;"></i> {{ g.t.my_claims }}</h1>
+</div>
 
 {% if claims %}
 <div class="card">
@@ -16,25 +18,26 @@
             </tr>
             {% for c in claims %}
             <tr>
-                <td>
+                <td style="color:#fff; font-weight:500;">
                     {% if c.image_path %}
-                    <img src="{{ url_for('static', filename=c.image_path) }}" style="width:40px; height:40px; object-fit:cover; border-radius:6px; vertical-align:middle; margin-right:8px;">
+                    <img src="{{ url_for('static', filename=c.image_path) }}" style="width:40px; height:40px; object-fit:cover; border-radius:8px; vertical-align:middle; margin-right:10px;">
                     {% endif %}
                     {{ c.item_title }}
                 </td>
                 <td><span class="badge badge-score">{{ c.match_score }}%</span></td>
                 <td><span class="badge badge-{{ c.status }}">{{ g.t[c.status] }}</span></td>
                 <td>{{ c.staff_note or '—' }}</td>
-                <td><a href="{{ url_for('item_details', item_id=c.item_id) }}" class="btn btn-sm btn-outline">{{ g.t.view }}</a></td>
+                <td><a href="{{ url_for('item_details', item_id=c.item_id) }}" class="btn btn-sm btn-outline"><i class="fas fa-eye"></i> {{ g.t.view }}</a></td>
             </tr>
             {% endfor %}
         </table>
     </div>
 </div>
 {% else %}
-<div class="card" style="text-align:center; padding:40px;">
-    <p style="color:var(--text-light);">{{ g.t.no_claims }}</p>
-    <a href="{{ url_for('search') }}" class="btn btn-primary" style="margin-top:12px;">{{ g.t.search_items }}</a>
+<div class="card" style="text-align:center; padding:60px;">
+    <i class="fas fa-hand-paper" style="font-size:3rem; color:var(--text-muted); margin-bottom:16px; display:block;"></i>
+    <p style="color:var(--text-muted); font-size:1.05rem; margin-bottom:16px;">{{ g.t.no_claims }}</p>
+    <a href="{{ url_for('search') }}" class="btn btn-primary"><i class="fas fa-search"></i> {{ g.t.search_items }}</a>
 </div>
 {% endif %}
 {% endblock %}
