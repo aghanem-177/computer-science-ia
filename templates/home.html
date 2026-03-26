@@ -10,9 +10,9 @@
     </div>
 </div>
 
-<div style="text-align:center; margin-bottom: 12px;">
+<div style="text-align:center;">
     <h2 class="section-title">{{ g.t.how_it_works }}</h2>
-    <p class="section-subtitle">Simple steps to recover your lost belongings</p>
+    <div class="gold-rule"></div>
 </div>
 <div class="steps">
     <div class="card step">
@@ -33,9 +33,12 @@
 </div>
 
 {% if recent_items %}
-<div style="text-align:center; margin: 48px 0 20px;">
-    <h2 class="section-title">{{ g.t.recent_items }}</h2>
-    <p class="section-subtitle">Recently logged items waiting to be claimed</p>
+<div style="margin: 40px 0 20px; display:flex; justify-content:space-between; align-items:center;">
+    <div>
+        <h2 class="section-title">{{ g.t.recent_items }}</h2>
+        <div class="gold-rule" style="margin-left:0; margin-right:auto;"></div>
+    </div>
+    <a href="{{ url_for('search') }}" class="btn btn-outline btn-sm">{{ g.t.view }} <i class="fas fa-arrow-right"></i></a>
 </div>
 <div class="card-grid">
     {% for item in recent_items %}
