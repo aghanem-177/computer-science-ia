@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}{{ g.t.potential_matches }}{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1><i class="fas fa-magic" style="margin-right:8px; color:var(--accent);"></i> {{ g.t.potential_matches }}</h1>
+</div>
+<p style="color:var(--text-light); margin-bottom:24px; margin-top:-16px;">{{ g.t.match_notification }}</p>
+
+{% for item, score in matches %}
+<div class="card match-card">
+    <div class="match-score">
+        <span class="badge badge-score" style="font-size:1.1rem;">{{ score }}%</span>
+    </div>
+    <div style="flex:1;">
+        <h3 style="color:#fff; font-weight:700;">{{ item.title }}</h3>
+        <p style="font-size:0.9rem; color:var(--text-light); margin-top:4px;">{{ item.description[:120] }}{% if item.description|length > 120 %}...{% endif %}</p>
+        <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+            <span class="badge badge-cat"><i class="fas fa-tag"></i> {{ g.t.get(item.category, item.category) }}</span>
+            <span class="badge badge-cat"><i class="fas fa-map-pin"></i> {{ g.t.get(item.location_found, item.location_found) }}</span>
+            <span class="badge badge-cat"><i class="fas fa-calendar"></i> {{ item.date_found }}</span>
+        </div>
+    </div>
+    <a href="{{ url_for('claim_item', item_id=item.id) }}" class="btn btn-primary"><i class="fas fa-hand-paper"></i> {{ g.t.claim_this }}</a>
+</div>
+{% endfor %}
+
+<a href="{{ url_for('my_lost_reports') }}" class="btn btn-outline" style="margin-top:16px;"><i class="fas fa-arrow-left"></i> {{ g.t.my_lost_reports }}</a>
+{% endblock %}

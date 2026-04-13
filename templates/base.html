@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="{{ g.lang }}" dir="{{ g.dir }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ g.t.site_name }} — {% block title %}{{ g.t.home }}{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800;900&family=Source+Sans+3:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="{{ g.dir }}">
+
+    <!-- Top utility bar (BISC style) -->
+    <div class="top-bar">
+        <span><i class="fas fa-envelope" style="margin-right:5px;"></i> info@bisc.edu.eg</span>
+        <div class="lang-switch">
+            <a href="{{ url_for('set_language', lang='en') }}" class="{% if g.lang == 'en' %}active{% endif %}">EN</a>
+            <a href="{{ url_for('set_language', lang='ar') }}" class="{% if g.lang == 'ar' %}active{% endif %}">عربي</a>
+        </div>
+    </div>
+
+    <!-- Main Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-brand">
+                <div class="brand-icon"><i class="fas fa-map-marker-alt"></i></div>
+                <span>found<span class="brand-at">@</span>bisc</span>
+            </a>
+
+            <div class="nav-links">
+                {% if session.get('user_id') %}
+                    {% if session.get('role') == 'staff' %}
+                        <a href="{{ url_for('staff_dashboard') }}" class="nav-link"><i class="fas fa-th-large"></i> {{ g.t.dashboard }}</a>
+                        <a href="{{ url_for('add_item') }}" class="nav-link"><i class="fas fa-plus-circle"></i> {{ g.t.add_item }}</a>
+                        <a href="{{ url_for('manage_claims') }}" class="nav-link"><i class="fas fa-clipboard-check"></i> {{ g.t.manage_claims }}</a>
+                        <a href="{{ url_for('all_items') }}" class="nav-link"><i class="fas fa-th-list"></i> {{ g.t.all_items }}</a>
+                        <a href="{{ url_for('reports') }}" class="nav-link"><i class="fas fa-chart-bar"></i> {{ g.t.reports }}</a>
+                    {% else %}
+                        <a href="{{ url_for('student_dashboard') }}" class="nav-link"><i class="fas fa-th-large"></i> {{ g.t.dashboard }}</a>
+                        <a href="{{ url_for('search') }}" class="nav-link"><i class="fas fa-search"></i> {{ g.t.search }}</a>
+                        <a href="{{ url_for('report_lost') }}" class="nav-link"><i class="fas fa-bullhorn"></i> {{ g.t.report_lost }}</a>
+                        <a href="{{ url_for('my_claims') }}" class="nav-link"><i class="fas fa-hand-paper"></i> {{ g.t.my_claims }}</a>
+                    {% endif %}
+                    <div class="nav-right">
+                        <div class="nav-user-badge">
+                            <div class="avatar">{{ session.get('user_name', '?')[0] | upper }}</div>
+                            <span class="nav-user-name">{{ session.get('user_name') }}</span>
+                        </div>
+                        <a href="{{ url_for('logout') }}" class="btn btn-sm btn-ghost"><i class="fas fa-sign-out-alt"></i> {{ g.t.logout }}</a>
+                    </div>
+                {% else %}
+                    <div class="nav-right">
+                        <a href="{{ url_for('login') }}" class="btn btn-sm btn-outline"><i class="fas fa-sign-in-alt"></i> {{ g.t.login }}</a>
+                        <a href="{{ url_for('register') }}" class="btn btn-sm btn-primary">{{ g.t.register }}</a>
+                    </div>
+                {% endif %}
+            </div>
+
+            <button class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="container fade-in">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} slide-down">
+                        <i class="fas {% if category == 'success' %}fa-check-circle{% elif category == 'danger' %}fa-exclamation-triangle{% elif category == 'warning' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="brand-icon"><i class="fas fa-map-marker-alt"></i></div>
+                found<span class="brand-at">@</span>bisc
+            </div>
+            <p>&copy; 2026 The British International School, Cairo &mdash; Lost &amp; Found System</p>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}{{ g.t.dashboard }}{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>{{ g.t.welcome }}, {{ session.get('user_name') }}</h1>
+        <p style="color:var(--text-light); margin-top:4px; font-size:0.95rem;">{{ session.get('email') }}</p>
+    </div>
+</div>
+
+<div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
+    <a href="{{ url_for('search') }}" class="quick-action">
+        <div class="action-icon" style="background:var(--navy-faint); color:var(--navy);">
+            <i class="fas fa-search"></i>
+        </div>
+        <span class="action-label">{{ g.t.search_items }}</span>
+    </a>
+    <a href="{{ url_for('report_lost') }}" class="quick-action">
+        <div class="action-icon" style="background:var(--gold-faint); color:var(--gold);">
+            <i class="fas fa-bullhorn"></i>
+        </div>
+        <span class="action-label">{{ g.t.report_lost }}</span>
+    </a>
+    <a href="{{ url_for('my_claims') }}" class="quick-action">
+        <div class="action-icon" style="background:var(--success-bg); color:var(--success);">
+            <i class="fas fa-hand-paper"></i>
+        </div>
+        <span class="action-label">{{ g.t.my_claims }}</span>
+    </a>
+    <a href="{{ url_for('my_lost_reports') }}" class="quick-action">
+        <div class="action-icon" style="background:var(--info-bg); color:var(--info);">
+            <i class="fas fa-clipboard-list"></i>
+        </div>
+        <span class="action-label">{{ g.t.my_lost_reports }}</span>
+    </a>
+</div>
+
+{% if claims %}
+<div class="card">
+    <div class="card-header">
+        <h2><i class="fas fa-hand-paper" style="color:var(--gold); margin-right:8px;"></i> {{ g.t.my_claims }}</h2>
+        <a href="{{ url_for('my_claims') }}" class="btn btn-sm btn-outline">{{ g.t.view }} all <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <tr><th>{{ g.t.title }}</th><th>{{ g.t.match_score }}</th><th>{{ g.t.status }}</th></tr>
+            {% for c in claims %}
+            <tr>
+                <td style="font-weight:600;">{{ c.item_title }}</td>
+                <td><span class="badge badge-score">{{ c.match_score }}%</span></td>
+                <td><span class="badge badge-{{ c.status }}">{{ g.t[c.status] }}</span></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endif %}
+
+{% if reports %}
+<div class="card">
+    <div class="card-header">
+        <h2><i class="fas fa-clipboard-list" style="color:var(--gold); margin-right:8px;"></i> {{ g.t.my_lost_reports }}</h2>
+        <a href="{{ url_for('my_lost_reports') }}" class="btn btn-sm btn-outline">{{ g.t.view }} all <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <tr><th>{{ g.t.title }}</th><th>{{ g.t.category }}</th><th>{{ g.t.status }}</th></tr>
+            {% for r in reports %}
+            <tr>
+                <td style="font-weight:600;">{{ r.title }}</td>
+                <td>{{ g.t.get(r.category, r.category) }}</td>
+                <td><span class="badge badge-{{ r.status }}">{{ g.t[r.status] }}</span></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

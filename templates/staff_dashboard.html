@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}{{ g.t.dashboard }} — {{ g.t.staff }}{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1><i class="fas fa-th-large" style="font-size:1.4rem; margin-right:8px;"></i> {{ g.t.dashboard }}</h1>
+        <p style="color:var(--text-light); margin-top:4px;">{{ g.t.staff }} — {{ session.get('user_name') }}</p>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-box-open"></i></div>
+        <div class="stat-num">{{ total_items }}</div>
+        <div class="stat-label">{{ g.t.total_items }}</div>
+    </div>
+    <div class="stat-card" style="border-top-color:var(--gold);">
+        <div class="stat-icon" style="color:var(--warning);"><i class="fas fa-clock"></i></div>
+        <div class="stat-num" style="color:var(--warning);">{{ pending_claims }}</div>
+        <div class="stat-label">{{ g.t.pending }} Claims</div>
+    </div>
+    <div class="stat-card" style="border-top-color:var(--success);">
+        <div class="stat-icon" style="color:var(--success);"><i class="fas fa-check-circle"></i></div>
+        <div class="stat-num" style="color:var(--success);">{{ returned }}</div>
+        <div class="stat-label">{{ g.t.total_returned }}</div>
+    </div>
+</div>
+
+<div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
+    <a href="{{ url_for('add_item') }}" class="quick-action">
+        <div class="action-icon" style="background:var(--navy-faint); color:var(--navy);"><i class="fas fa-plus"></i></div>
+        <span class="action-label">{{ g.t.add_item }}</span>
+    </a>
+    <a href="{{ url_for('all_items') }}" class="quick-action">
+        <div class="action-icon" style="background:var(--info-bg); color:var(--info);"><i class="fas fa-th-list"></i></div>
+        <span class="action-label">{{ g.t.all_items }}</span>
+    </a>
+    <a href="{{ url_for('manage_claims') }}" class="quick-action">
+        <div class="action-icon" style="background:var(--gold-faint); color:var(--gold);"><i class="fas fa-clipboard-check"></i></div>
+        <span class="action-label">{{ g.t.manage_claims }}</span>
+    </a>
+    <a href="{{ url_for('reports') }}" class="quick-action">
+        <div class="action-icon" style="background:var(--success-bg); color:var(--success);"><i class="fas fa-chart-bar"></i></div>
+        <span class="action-label">{{ g.t.reports }}</span>
+    </a>
+</div>
+
+{% if recent %}
+<div class="card">
+    <div class="card-header">
+        <h2><i class="fas fa-clock" style="color:var(--gold); margin-right:8px;"></i> {{ g.t.recent_items }}</h2>
+        <a href="{{ url_for('all_items') }}" class="btn btn-sm btn-outline">{{ g.t.view }} all <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <tr>
+                <th>{{ g.t.title }}</th>
+                <th>{{ g.t.category }}</th>
+                <th>{{ g.t.location }}</th>
+                <th>{{ g.t.date_found }}</th>
+                <th>{{ g.t.status }}</th>
+                <th>{{ g.t.actions }}</th>
+            </tr>
+            {% for item in recent %}
+            <tr>
+                <td style="font-weight:600;">{{ item.title }}</td>
+                <td>{{ g.t.get(item.category, item.category) }}</td>
+                <td>{{ g.t.get(item.location_found, item.location_found) }}</td>
+                <td>{{ item.date_found }}</td>
+                <td><span class="badge badge-{{ item.status }}">{{ g.t[item.status] }}</span></td>
+                <td><a href="{{ url_for('edit_item', item_id=item.id) }}" class="btn btn-sm btn-outline"><i class="fas fa-pen"></i> {{ g.t.edit }}</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

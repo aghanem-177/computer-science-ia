@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}{{ g.t.my_lost_reports }}{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1><i class="fas fa-clipboard-list" style="margin-right:8px;"></i> {{ g.t.my_lost_reports }}</h1>
+    <a href="{{ url_for('report_lost') }}" class="btn btn-accent"><i class="fas fa-plus"></i> {{ g.t.report_lost }}</a>
+</div>
+
+{% if reports %}
+<div class="card">
+    <div class="table-wrap">
+        <table>
+            <tr>
+                <th>{{ g.t.title }}</th>
+                <th>{{ g.t.category }}</th>
+                <th>{{ g.t.location }}</th>
+                <th>{{ g.t.date_lost }}</th>
+                <th>{{ g.t.status }}</th>
+            </tr>
+            {% for r in reports %}
+            <tr>
+                <td style="color:#fff; font-weight:500;">{{ r.title }}</td>
+                <td>{{ g.t.get(r.category, r.category) }}</td>
+                <td>{{ g.t.get(r.location_lost, r.location_lost) }}</td>
+                <td>{{ r.date_lost }}</td>
+                <td><span class="badge badge-{{ r.status }}">{{ g.t[r.status] }}</span></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="card" style="text-align:center; padding:60px;">
+    <i class="fas fa-clipboard-list" style="font-size:3rem; color:var(--text-muted); margin-bottom:16px; display:block;"></i>
+    <p style="color:var(--text-muted); font-size:1.05rem; margin-bottom:16px;">{{ g.t.no_reports }}</p>
+    <a href="{{ url_for('report_lost') }}" class="btn btn-accent"><i class="fas fa-bullhorn"></i> {{ g.t.report_lost }}</a>
+</div>
+{% endif %}
+{% endblock %}

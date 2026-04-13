@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}{{ g.t.claim_this }}{% endblock %}
+{% block content %}
+<div style="max-width:700px; margin:0 auto;">
+    <a href="{{ url_for('item_details', item_id=item.id) }}" class="btn btn-sm btn-outline" style="margin-bottom:20px;"><i class="fas fa-arrow-left"></i> {{ g.t.back }}</a>
+
+    <div class="card">
+        <h1 style="margin-bottom:8px; font-size:1.5rem; font-weight:800; color:#fff;">
+            <i class="fas fa-hand-paper" style="color:var(--primary-light);"></i> {{ g.t.claim_this }}
+        </h1>
+        <p style="color:var(--text-muted); margin-bottom:24px;">{{ item.title }}</p>
+
+        <form method="POST">
+            <div class="form-group">
+                <label><i class="fas fa-pen"></i> {{ g.t.claim_description }}</label>
+                <textarea name="claim_description" rows="6" required
+                    placeholder="Describe identifying details: color, brand, marks, contents, when/where you lost it..."></textarea>
+            </div>
+            <div style="display:flex; gap:12px;">
+                <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-paper-plane"></i> {{ g.t.submit }}</button>
+                <a href="{{ url_for('item_details', item_id=item.id) }}" class="btn btn-outline btn-lg">{{ g.t.cancel }}</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
